@@ -1,4 +1,30 @@
-const { Schema, Types } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
+
+
+// reaction
+const reactionSchema = new Schema({
+    // reactionId - mongoose ObjectID data type, default value is set to new ObjectID
+    reactionId: {
+        type: Schema.Types.ObjectId,
+        default: Types.ObjectId
+    },
+    // reactionBody - String, required, 280 char max.
+    reactionBody:{
+        type: String,
+        required: true,
+        maxlength: 280
+    },
+    // username - String, required
+    userName:{
+        type: String,
+        required: true
+    },
+    // createdAt - Date, set default to current timestamp, use getter method to format the timestamp on query
+    createdAt:{
+        type: Date,
+        default: Date.now
+    }
+});
 
 const thoughtSchema = new Schema(
     {
@@ -33,30 +59,7 @@ const thoughtSchema = new Schema(
 thoughtSchema.virtual('reactionCount').get(function(){
     return this.reaction.length;
 });
-// reaction
-const reactionSchema = new mongoose.Schema({
-    // reactionId - mongoose ObjectID data type, default value is set to new ObjectID
-    reactionId: {
-        type: Schema.Types.ObjectId,
-        default: Types.ObjectId
-    },
-    // reactionBody - String, required, 280 char max.
-    reactionBody:{
-        type: String,
-        required: true,
-        maxlength: 280
-    },
-    // username - String, required
-    userName:{
-        type: String,
-        required: true
-    },
-    // createdAt - Date, set default to current timestamp, use getter method to format the timestamp on query
-    createdAt:{
-        type: Date,
-        default: Date.now
-    }
-});
 
-const Thought = mongoose.model('Thought', thoughtSchema);
+
+const Thought = model('Thought', thoughtSchema);
 module.exports = Thought;

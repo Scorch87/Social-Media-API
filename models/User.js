@@ -1,9 +1,10 @@
-const { Schema, Types } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
+const mongoose = require('mongoose');
 
 const userSchema = new Schema(
     {
         // username - string, unique, required, trimmed
-        userName: {
+        username: {
             type: String,
             required: true,
             unique: true, 
@@ -34,12 +35,24 @@ const userSchema = new Schema(
                 ref: 'User',
             },
         ],
-    })
+        // thoughts:[thoughtSchema],
+    },
+    // {
+    //     toJSON: {
+    //         virtuals: true,
+    //         getters: true,
+    //     },
+    //     // id: false,
+    // }
+);
+// userSchema.methods.addFriend = function (friendID){
+//     friends.push(friendID);
+// }
 
 // schema settings - create a virtual called friendCount that retrieves the length of the user's friends array
 userSchema.virtual('friendCount').get(function(){
     return this.friends.length;
 });
 
-const User = mongoose.model('User', userSchema);
+const User = model('user', userSchema);
 module.exports = User;
